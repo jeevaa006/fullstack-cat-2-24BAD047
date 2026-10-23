@@ -55,3 +55,7 @@ Thumbs.db
 # Tooling
 .freebuff/
 .eslintcache
+
+node_modules/
+.env
+.vscode/
