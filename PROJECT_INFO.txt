@@ -1,0 +1,95 @@
+PROJECT FOLDER OVERVIEW
+=======================
+
+Folder: /home/workspace/my-project
+Name: mern (version 1.0.0)
+Type: Full-stack MERN TODO application (Node.js + Express + React + MongoDB)
+
+
+WHAT THIS PROJECT IS
+--------------------
+A small TODO application that demonstrates the MERN stack. The Express
+backend exposes a REST API for creating, listing, and deleting TODO items,
+and stores them in MongoDB through Mongoose. The React frontend (built with
+Vite) provides the user interface. In production the backend serves the
+compiled React build as static files.
+
+
+TOP-LEVEL FILES AND FOLDERS
+---------------------------
+package.json          Project metadata and npm scripts (start, dev, client,
+                      server, setup, test).
+package-lock.json     Locked dependency tree for the server.
+README.md             Project instructions, run commands, and troubleshooting.
+index.js              Backend entry point: starts Express on PORT (default
+                      5000), connects to MongoDB using MONGO_DB_URI, enables
+                      CORS, mounts the API at /api, and serves the React build
+                      from client/dist.
+.env                  Local environment variables (MONGO_DB_URI). Contains
+                      secrets, so its values are intentionally not documented
+                      here.
+env-example           Sample environment file template.
+Dockerfile            Two-stage Docker build: builds the client with Node 22
+                      Alpine, then creates a production server image that
+                      copies only production dependencies plus client/dist.
+.vscode/              Editor configuration and workspace-specific settings
+                      (launch.json, settings.json, tasks.json, .studio/).
+models/               Mongoose data models.
+  todo.js             "todo" schema with a single required String field
+                      named "action".
+routes/               Express API routes.
+  api.js              REST endpoints:
+                        GET    /api/todos      -> list all todos (id + action)
+                        POST   /api/todos      -> create a todo from { action }
+                        DELETE /api/todos/:id  -> delete a todo by id
+client/               React frontend built with Vite.
+  index.html          HTML entry page.
+  vite.config.js      Vite configuration.
+  package.json        Client dependencies and scripts.
+  public/             Static public assets (vite.svg).
+  src/
+    main.jsx          React application bootstrap.
+    App.jsx           Root App component.
+    App.css           Component styles.
+    index.css         Global styles.
+    assets/           Bundled assets (react.svg).
+    components/
+      Input.jsx       Form input for adding a new todo.
+      ListTodo.jsx    Renders the collection of todo items.
+      Todo.jsx        Single todo item with delete action.
+node_modules/         Installed npm dependencies (generated, not source).
+
+
+HOW IT WORKS
+------------
+1. The client sends HTTP requests to the Express API under /api.
+2. routes/api.js validates and forwards requests to the Todo Mongoose model.
+3. models/todo.js defines the stored document shape and talks to MongoDB.
+4. index.js wires everything together and, after a client build, serves the
+   React single-page app for all non-API routes.
+
+
+HOW TO RUN
+----------
+1. Install dependencies:
+     npm run setup
+2. Start server and client together in development:
+     npm run dev
+   Or run them separately:
+     npm run server   (nodemon index.js)
+     npm run client   (Vite dev server in client/)
+3. Production start:
+     npm start        (node index.js, serving client/dist)
+
+A MongoDB connection string must be provided via MONGO_DB_URI in .env
+(see env-example for the expected format).
+
+
+NOTES
+-----
+- There are no automated tests configured; "npm test" currently exits with an
+  error placeholder.
+- The Docker image builds the client first and runs only the server in the
+  final stage.
+- This file (PROJECT_INFO.txt) was generated as a plain-text summary of the
+  folder contents.
